@@ -19,6 +19,6 @@ public class TextLookingAtPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.rotation = lookAtPlayer.transform.rotation;
+        transform.rotation = Quaternion.LookRotation(lookAtPlayer.transform.forward);
     }
 }
