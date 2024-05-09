@@ -438,7 +438,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d8a65987283bcbf4da24395329b95de4, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.497
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -3401,7 +3401,7 @@ Transform:
   m_GameObject: {fileID: 1303248495}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.38, y: 0, z: -0.03}
+  m_LocalPosition: {x: 16.96, y: 0, z: -0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4984,7 +4984,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 1.61e-43, z: 0, w: -1.3790414e-38}
+  m_BoundingSphereOverride: {x: 0, y: 0.19905943, z: -0.9402882, w: -0.27610445}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
