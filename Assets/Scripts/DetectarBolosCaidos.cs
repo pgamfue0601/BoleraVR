@@ -86,7 +86,7 @@ public class DetectarBolosCaidos : MonoBehaviour
     private IEnumerator BolosCaidos()
     {
         yield return new WaitForSeconds(2f);
-        if (caidos == 10)
+        if (caidos == 10 && !secondChance)
         {
             Debug.Log("¡STRIKE!");
             strike.PlayOneShot(strike.clip);
@@ -104,6 +104,7 @@ public class DetectarBolosCaidos : MonoBehaviour
                 {
                     Destroy(bolo);
                 }
+                secondChance = false;
                 GetBolosBack();
                 bolosText.text = caidos.ToString();
                 puntuacionText.text = (Int32.Parse(puntuacionText.text) + caidos).ToString();
