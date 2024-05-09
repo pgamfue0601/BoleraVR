@@ -11,12 +11,12 @@ public class DetectarBolosCaidos : MonoBehaviour
     private int caidos = 0;
     private AudioSource strike;
     private bool secondChance = false;
-    private GameObject[] newBolos;
     private int linea = 0;
     private GameObject[] bolas;
-    private GameObject[] newBolas;
     [SerializeField] private TextMeshProUGUI puntuacionText;
     [SerializeField] private TextMeshProUGUI bolosText;
+    [SerializeField] private GameObject bolasConjunto, bolosConjunto;
+    private GameObject newBolos, newBolas;
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +24,6 @@ public class DetectarBolosCaidos : MonoBehaviour
         strike = GameObject.Find("AudioSourceStrike").GetComponent<AudioSource>();
         bolos = GameObject.FindGameObjectsWithTag("Bolo");
         bolas = GameObject.FindGameObjectsWithTag("Bola");
-
-        newBolos = (GameObject[])bolos.Clone();
-        newBolas = (GameObject[])bolas.Clone();
 
         foreach (GameObject bolo in bolos)
         {
@@ -38,10 +35,7 @@ public class DetectarBolosCaidos : MonoBehaviour
             bola.SetActive(false);
         }
 
-        AñadirBolos();
         GetBolosBack();
-
-        AñadirBolas();
         GetBolasBack();
         
     }
@@ -49,32 +43,30 @@ public class DetectarBolosCaidos : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (newBolas.Length == 0)
-        {
-            AñadirBolas();
-            GetBolasBack();
-        }
+        //if (newBolas.Length == 0)
+        //{
+        //    AñadirBolas();
+        //    GetBolasBack();
+        //}
     }
 
     private IEnumerator OnTriggerEnter(Collider other)
     {
         yield return new WaitForSeconds(1.5f);
 
-        if (other.CompareTag("Bola"))
+        if (other.CompareTag("BolaClone"))
         {
             Debug.Log("Llegó la bola");
             DetectarBolos();
-            Destroy(other.gameObject, 2f);
+            Destroy(other.gameObject);
         }
     }
 
     private void DetectarBolos()
     {
-
-        
-        if (newBolos != null)
+        if (GameObject.FindGameObjectsWithTag("BoloClone") != null)
         {
-            foreach (GameObject bolo in newBolos)
+            foreach (GameObject bolo in GameObject.FindGameObjectsWithTag("BoloClone"))
             {
                 if (bolo.transform.up.y < threshold)
                 {
@@ -99,11 +91,7 @@ public class DetectarBolosCaidos : MonoBehaviour
             Debug.Log("¡STRIKE!");
             strike.PlayOneShot(strike.clip);
 
-            newBolos = (GameObject[])bolos.Clone();
-            newBolas = (GameObject[])bolas.Clone();
-            AñadirBolos();
             GetBolosBack();
-            GetBolasBack();
             bolosText.text = caidos.ToString();
             puntuacionText.text = (Int32.Parse(puntuacionText.text) + caidos).ToString();
         }
@@ -112,15 +100,14 @@ public class DetectarBolosCaidos : MonoBehaviour
             if (secondChance)
             {
                 Debug.Log("!SPARE!");
-
-                newBolos = (GameObject[])bolos.Clone();
-                newBolas = (GameObject[])bolas.Clone();
-
-                AñadirBolos();
+                foreach (GameObject bolo in GameObject.FindGameObjectsWithTag("BoloClone"))
+                {
+                    Destroy(bolo);
+                }
                 GetBolosBack();
-                GetBolasBack();
-                caidos = 0;
+                bolosText.text = caidos.ToString();
                 puntuacionText.text = (Int32.Parse(puntuacionText.text) + caidos).ToString();
+                caidos = 0;
             } else {
                 secondChance = true;
                 bolosText.text = caidos.ToString();
@@ -131,48 +118,21 @@ public class DetectarBolosCaidos : MonoBehaviour
 
     private IEnumerator BloquearBolas()
     {
-        foreach (GameObject bola in newBolas)
+        foreach (GameObject bola in GameObject.FindGameObjectsWithTag("BolaClone"))
         {
-            bola.SetActive(false);
+            Destroy(bola);
         }
-        yield return new WaitForSeconds(2f);
-        foreach (GameObject bola in newBolas)
-        {
-            bola.SetActive(true);
-        }
+        yield return new WaitForSeconds(1.5f);
+        GetBolasBack();
     }
 
     private void GetBolosBack()
     {
-        foreach (GameObject bolo in newBolos)
-        {
-            bolo.SetActive(true);
-        }
+        newBolos = Instantiate(bolosConjunto, new Vector3(21.5f, -0.35f, 19.09f), bolosConjunto.transform.rotation);
     }
 
     private void GetBolasBack()
     {
-        foreach (GameObject bola in newBolas)
-        {
-            bola.SetActive(true);
-        }
-    }
-
-    private void AñadirBolos()
-    {
-        for (int i = 0; i < bolos.Length; i++)
-        {
-            Instantiate(newBolos[i]);
-            newBolos[i].transform.position = bolos[i].transform.position;
-        }
-    }
-
-    private void AñadirBolas()
-    {
-        for (int i = 0; i < bolas.Length; i++)
-        {
-            Instantiate(newBolas[i]);
-            newBolas[i].transform.position = bolas[i].transform.position;
-        }
+        newBolas = Instantiate(bolasConjunto, new Vector3(18.9f, -0.35f, 19.12f), bolasConjunto.transform.rotation);
     }
 }
